@@ -1,0 +1,811 @@
+{\rtf1\ansi\ansicpg950\cocoartf2822
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset136 PingFangTC-Regular;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww12720\viewh7240\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 <!DOCTYPE html>\
+<html lang="zh-TW">\
+<head>\
+    <meta charset="UTF-8">\
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">\
+    <title>Gloria
+\f1 \'a6\'d1\'ae\'76\'be\'c9\'ae\'76\'af\'5a\'ae\'79\'a6\'ec\'aa\'ed
+\f0 </title>\
+    <script src="https://cdn.tailwindcss.com"></script>\
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">\
+    <style>\
+        body \{\
+            font-family: 'Inter', sans-serif;\
+            background-color: #f3f4f6; /* Light gray background */\
+        \}\
+        .seat, .unusable-seat \{ /* Combined common properties */\
+            width: 110px; /* Increased width for larger text */\
+            height: 90px; /* Increased height for larger text */\
+            display: flex;\
+            justify-content: center;\
+            align-items: center;\
+            text-align: center;\
+            padding: 0.3rem; /* Adjusted padding */\
+            border-radius: 0.375rem; /* rounded-md */\
+            overflow: hidden;\
+            word-break: break-word;\
+        \}\
+        .seat \{\
+            border: 1px solid #9ca3af; /* Gray border */\
+            flex-direction: column; /* Stack ID and Name */\
+            background-color: #fff; /* White background for seats */\
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);\
+            position: relative; \
+        \}\
+        .unusable-seat \{\
+            border: 1px solid #d1d5db; /* Gray-300 border */\
+            background-color: #e5e7eb; /* Gray-200 background */\
+            color: #6b7280; /* Gray-500 text */\
+            font-style: italic;\
+            font-size: 0.875rem; /* text-sm */\
+        \}\
+        .student-id \{\
+            font-size: 0.85rem; /* Increased size */\
+            font-weight: 600; /* Semibold */\
+            color: #4b5563; /* Darker Gray for better visibility */\
+            margin-bottom: 0.2rem; \
+        \}\
+        .student-name \{\
+            font-size: 1rem; /* Increased size */\
+            font-weight: 700; /* Bold */\
+            color: #1f2937; /* Even darker gray / near black */\
+        \}\
+        .empty-seat-placeholder \{\
+            width: 110px; /* Match seat width */\
+            height: 90px; /* Match seat height */\
+            border: 1px dashed #d1d5db; \
+            background-color: #f9fafb; \
+            border-radius: 0.375rem; \
+        \}\
+        .podium \{\
+            width: 100%;\
+            height: 40px;\
+            background-color: #8b5cf6; /* Purple-500 */\
+            color: white;\
+            display: flex;\
+            justify-content: center;\
+            align-items: center;\
+            border-radius: 0.375rem; \
+            margin-top: 1.5rem; \
+            font-weight: 600; \
+            font-size: 1.125rem; \
+        \}\
+        select, button \{\
+            border-radius: 0.375rem; \
+            border: 1px solid #d1d5db; \
+            padding: 0.5rem 0.75rem;\
+            transition: box-shadow 0.15s ease-in-out, background-color 0.15s ease-in-out;\
+        \}\
+        select:focus, button:focus \{\
+            outline: none;\
+            border-color: #2563eb; \
+            box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25); \
+        \}\
+        button.action-button \{ \
+            background-color: #3b82f6; \
+            color: white;\
+            font-weight: 500;\
+        \}\
+        button.action-button:hover \{\
+            background-color: #2563eb; \
+        \}\
+        button.secondary-button \{\
+            background-color: #6b7280; \
+            color: white;\
+        \}\
+        button.secondary-button:hover \{\
+            background-color: #4b5563; \
+        \}\
+        .control-group label \{\
+            display: block;\
+            margin-bottom: 0.25rem;\
+            font-weight: 500;\
+            color: #374151; \
+        \}\
+        .seat.selected-for-swap \{\
+            border: 2px solid #ef4444; \
+            background-color: #fee2e2; \
+        \}\
+        .seat.manual-adjust-active:hover \{\
+            background-color: #dbeafe; \
+            cursor: pointer;\
+        \}\
+\
+        #teacher-name-display \{\
+            font-weight: bold;\
+            background-color: #fbcfe8; /* Tailwind pink-200 */\
+            color: #9d174d; /* Tailwind pink-800 for contrast */\
+            padding: 0.5rem 0.75rem;\
+            border-radius: 0.375rem; /* rounded-md */\
+            display: inline-block; /* To make padding and bg work well */\
+        \}\
+        #warning-text-explicit \{\
+            font-style: italic;\
+            font-weight: bold;\
+            color: #c2410c; /* Tailwind red-700, adjusted for yellow bg */\
+            background-color: #fef08a; /* Tailwind yellow-200 */\
+            padding: 0.5rem 0.75rem;\
+            border-radius: 0.375rem; /* rounded-md */\
+            margin-top: 0.5rem; /* Space from teacher name */\
+            text-align: center;\
+            border: 1px solid #facc15; /* Yellow-400 border for definition */\
+        \}\
+\
+\
+        @media print \{\
+            body * \{\
+                visibility: hidden;\
+            \}\
+            .printable-area, .printable-area * \{\
+                visibility: visible;\
+            \}\
+            .printable-area \{\
+                position: absolute;\
+                left: 0;\
+                top: 0;\
+                width: 100%;\
+                margin: 0;\
+                padding: 20px !important; /* Add some padding for printing */\
+            \}\
+            .controls-container, .action-buttons-container, #chart-notification \{\
+                display: none !important;\
+            \}\
+            .podium \{\
+                background-color: #8b5cf6 !important; \
+                color: white !important;\
+                -webkit-print-color-adjust: exact;\
+                color-adjust: exact;\
+            \}\
+            .seat \{\
+                border: 1px solid #000 !important;\
+                background-color: #fff !important;\
+                page-break-inside: avoid;\
+                box-shadow: none !important;\
+                width: 90px !important; /* Adjust for print if needed */\
+                height: 75px !important;\
+            \}\
+            .student-id \{\
+                font-size: 0.7rem !important;\
+            \}\
+            .student-name \{\
+                font-size: 0.85rem !important;\
+            \}\
+            .unusable-seat \{\
+                border: 1px solid #ccc !important;\
+                background-color: #e5e7eb !important;\
+                color: #6b7280 !important;\
+                -webkit-print-color-adjust: exact;\
+                color-adjust: exact;\
+                font-size: 0.75rem !important;\
+            \}\
+            .empty-seat-placeholder \{\
+                border: 1px dashed #ccc !important;\
+                background-color: #f9fafb !important;\
+            \}\
+            h1, h2 \{\
+                text-align: center !important; \
+                margin-bottom: 0.5rem !important;\
+            \}\
+            #teacher-name-display \{\
+                text-align: center !important;\
+                background-color: #fbcfe8 !important;\
+                color: #9d174d !important;\
+                -webkit-print-color-adjust: exact;\
+                color-adjust: exact;\
+                padding: 0.25rem 0.5rem !important;\
+                font-size: 0.9rem !important;\
+            \}\
+            #warning-text-explicit \{\
+                text-align: center !important;\
+                background-color: #fef08a !important;\
+                color: #c2410c !important;\
+                -webkit-print-color-adjust: exact;\
+                color-adjust: exact;\
+                font-size: 0.8rem !important;\
+                padding: 0.25rem 0.5rem !important;\
+                margin-top: 0.25rem !important;\
+            \}\
+            #seating-chart-container \{\
+                gap: 0.2rem !important; \
+                padding-top: 0.5rem !important;\
+            \}\
+        \}\
+    </style>\
+</head>\
+<body class="p-4 md:p-8">\
+    <div class="container mx-auto max-w-6xl bg-white p-6 rounded-lg shadow-xl"> <header class="mb-2 text-center">\
+            <h1 class="text-3xl font-bold text-gray-800">Gloria
+\f1 \'a6\'d1\'ae\'76\'be\'c9\'ae\'76\'af\'5a\'ae\'79\'a6\'ec\'aa\'ed
+\f0 </h1>\
+        </header>\
+        \
+        <div class="controls-container mb-8 p-4 border border-gray-200 rounded-lg bg-gray-50">\
+            <div class="controls grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">\
+                <div class="control-group">\
+                    <label for="month-select" class="text-gray-700">
+\f1 \'bf\'ef\'be\'dc\'a4\'eb\'a5\'f7\'a1\'47
+\f0 </label>\
+                    <select id="month-select" class="w-full">\
+                        <option value="1">
+\f1 \'a4\'40\'a4\'eb
+\f0 </option><option value="2">
+\f1 \'a4\'47\'a4\'eb
+\f0 </option><option value="3">
+\f1 \'a4\'54\'a4\'eb
+\f0 </option>\
+                        <option value="4">
+\f1 \'a5\'7c\'a4\'eb
+\f0 </option><option value="5">
+\f1 \'a4\'ad\'a4\'eb
+\f0 </option><option value="6">
+\f1 \'a4\'bb\'a4\'eb
+\f0 </option>\
+                        <option value="7">
+\f1 \'a4\'43\'a4\'eb
+\f0 </option><option value="8">
+\f1 \'a4\'4b\'a4\'eb
+\f0 </option><option value="9">
+\f1 \'a4\'45\'a4\'eb
+\f0 </option>\
+                        <option value="10">
+\f1 \'a4\'51\'a4\'eb
+\f0 </option><option value="11">
+\f1 \'a4\'51\'a4\'40\'a4\'eb
+\f0 </option><option value="12">
+\f1 \'a4\'51\'a4\'47\'a4\'eb
+\f0 </option>\
+                    </select>\
+                </div>\
+\
+                <div class="control-group">\
+                    <label class="text-gray-700">
+\f1 \'c0\'75\'a5\'fd\'b1\'c6\'a6\'62\'ab\'65\'ad\'b1\'be\'c7\'a5\'cd
+\f0  (
+\f1 \'b3\'cc\'a6\'68
+\f0 3
+\f1 \'a6\'ec
+\f0 ):</label>\
+                    <select id="priority-front-1" class="w-full mb-2"><option value="">-- 
+\f1 \'b5\'4c
+\f0  --</option></select>\
+                    <select id="priority-front-2" class="w-full mb-2"><option value="">-- 
+\f1 \'b5\'4c
+\f0  --</option></select>\
+                    <select id="priority-front-3" class="w-full"><option value="">-- 
+\f1 \'b5\'4c
+\f0  --</option></select>\
+                </div>\
+\
+                <div class="control-group">\
+                    <label class="text-gray-700">
+\f1 \'c1\'d7\'a7\'4b\'ac\'db\'be\'46\'be\'c7\'a5\'cd
+\f0  (
+\f1 \'b2\'c4
+\f0 1
+\f1 \'b2\'d5
+\f0 ):</label>\
+                    <select id="avoid-1a" class="w-full mb-2"><option value="">-- 
+\f1 \'be\'c7\'a5\'cd
+\f0 A --</option></select>\
+                    <select id="avoid-1b" class="w-full"><option value="">-- 
+\f1 \'be\'c7\'a5\'cd
+\f0 B --</option></select>\
+                </div>\
+\
+                <div class="control-group">\
+                    <label class="text-gray-700">
+\f1 \'c1\'d7\'a7\'4b\'ac\'db\'be\'46\'be\'c7\'a5\'cd
+\f0  (
+\f1 \'b2\'c4
+\f0 2
+\f1 \'b2\'d5
+\f0 ):</label>\
+                    <select id="avoid-2a" class="w-full mb-2"><option value="">-- 
+\f1 \'be\'c7\'a5\'cd
+\f0 C --</option></select>\
+                    <select id="avoid-2b" class="w-full"><option value="">-- 
+\f1 \'be\'c7\'a5\'cd
+\f0 D --</option></select>\
+                </div>\
+            </div>\
+             <div class="action-buttons-container mt-6 flex flex-col sm:flex-row justify-center items-center gap-4">\
+                <button id="generate-chart-btn" class="action-button py-2 px-6 w-full sm:w-auto">\
+                    
+\f1 \'b2\'a3\'a5\'cd\'ae\'79\'a6\'ec\'aa\'ed
+\f0 \
+                </button>\
+                <button id="manual-adjust-btn" class="secondary-button py-2 px-6 w-full sm:w-auto">\
+                    
+\f1 \'a4\'e2\'b0\'ca\'bd\'d5\'be\'e3\'ae\'79\'a6\'ec
+\f0 \
+                </button>\
+                <button id="print-chart-btn" class="secondary-button py-2 px-6 w-full sm:w-auto">\
+                    
+\f1 \'ae\'79\'a6\'ec\'aa\'ed\'a6\'43\'a6\'4c
+\f0 \
+                </button>\
+            </div>\
+        </div>\
+        \
+        <div id="chart-notification" class="mb-4 text-center text-red-600 font-medium"></div>\
+        \
+        <div class="printable-area">\
+            <h2 id="seating-chart-title" class="text-2xl font-semibold text-center mb-1 text-gray-700"></h2>\
+            <div class="text-center mb-2"> <p id="teacher-name-display" class="text-lg">
+\f1 \'be\'c9\'ae\'76\'a1\'47
+\f0 Gloria 
+\f1 \'a7\'64\'a8\'71\'c4\'f5\'a6\'d1\'ae\'76
+\f0 </p>\
+            </div>\
+            <p id="warning-text-explicit">
+\f1 \'a5\'bc\'b8\'67\'be\'c9\'ae\'76\'b3\'5c\'a5\'69\'a1\'41\'c4\'59\'b8\'54\'a5\'f4\'b7\'4e\'a7\'f3\'b4\'ab\'ae\'79\'a6\'ec\'a1\'49\'a1\'49
+\f0 </p>\
+            \
+            <div id="seating-chart-container" class="grid gap-2 justify-center mt-6">\
+                </div>\
+            <div class="podium">
+\f1 \'b6\'c2\'aa\'4f
+\f0  / 
+\f1 \'c1\'bf\'a5\'78
+\f0 </div>\
+        </div>\
+    </div>\
+\
+    <script>\
+        const students = [\
+            \{ id: "219008", name: "
+\f1 \'a7\'f5\'a9\'7c\'eb\'f7
+\f0 " \}, \{ id: "219022", name: "
+\f1 \'b3\'af\'ac\'66\'a6\'74
+\f0 " \}, \{ id: "219011", name: "
+\f1 \'aa\'4c\'aa\'51\'a8\'dd
+\f0 " \},\
+            \{ id: "219019", name: "
+\f1 \'b3\'a2\'ac\'66\'a7\'c2
+\f0 " \}, \{ id: "219020", name: "
+\f1 \'b3\'af\'a4\'cd\'a4\'e5
+\f0 " \}, \{ id: "219024", name: "
+\f1 \'b6\'c0\'ab\'c9\'b9\'c5
+\f0 " \},\
+            \{ id: "219029", name: "
+\f1 \'c4\'ac\'ab\'b3\'bb\'f4
+\f0 " \}, \{ id: "219016", name: "
+\f1 \'b3\'af\'d6\'f6\'b3\'cd
+\f0 " \}, \{ id: "219023", name: "
+\f1 \'b6\'c0\'ab\'61\'bf\'41
+\f0 " \},\
+            \{ id: "219021", name: "
+\f1 \'b3\'af\'ab\'ed\'d6\'f6
+\f0 " \}, \{ id: "219010", name: "
+\f1 \'aa\'4c\'a5\'bf\'b3\'d4
+\f0 " \}, \{ id: "219027", name: "
+\f1 \'c1\'c2\'b3\'d5\'a6\'77
+\f0 " \},\
+            \{ id: "219014", name: "
+\f1 \'aa\'4c\'b3\'d5\'ab\'c5
+\f0 " \}, \{ id: "219002", name: "
+\f1 \'a4\'fd\'ab\'c9\'f1\'5a
+\f0 " \}, \{ id: "219006", name: "
+\f1 \'a6\'b6\'ab\'db\'c0\'4d
+\f0 " \},\
+            \{ id: "219013", name: "
+\f1 \'aa\'4c\'ab\'61\'bf\'6f
+\f0 " \}, \{ id: "219018", name: "
+\f1 \'b3\'a2\'ab\'c9\'a8\'b0
+\f0 " \}, \{ id: "219015", name: "
+\f1 \'aa\'4c\'bc\'dd\'f8\'ca
+\f0 " \},\
+            \{ id: "219004", name: "
+\f1 \'a4\'fd\'b1\'4c\'a5\'e0
+\f0 " \}, \{ id: "219012", name: "
+\f1 \'aa\'4c\'ab\'61\'a7\'ca
+\f0 " \}, \{ id: "219001", name: "
+\f1 \'a7\'f9\'df\'4e\'b4\'fc
+\f0 " \},\
+            \{ id: "219005", name: "
+\f1 \'a4\'fd\'b8\'5b\'b5\'7b
+\f0 " \}, \{ id: "219003", name: "
+\f1 \'a4\'fd\'ad\'b3\'b6\'76
+\f0 " \}, \{ id: "219025", name: "
+\f1 \'b9\'f9\'ae\'ca\'a6\'f6
+\f0 " \},\
+            \{ id: "219026", name: "
+\f1 \'c1\'c2\'a9\'7c\'bf\'d9
+\f0 " \}, \{ id: "219017", name: "
+\f1 \'b2\'f8\'a4\'e5\'a5\'dd
+\f0 " \}, \{ id: "219009", name: "
+\f1 \'a7\'f5\'ab\'db\'a7\'ca
+\f0 " \}\
+        ];\
+\
+        // 
+\f1 \'ae\'79\'a6\'ec\'b0\'74\'b8\'6d
+\f0 : rows, seats per row, front row indicator\
+        // 
+\f1 \'a6\'d1\'ae\'76\'b5\'f8\'a8\'a4
+\f0  (
+\f1 \'b1\'d0\'ab\'c7\'ab\'65\'a4\'e8\'ac\'b0\'b2\'c4
+\f0 0
+\f1 \'b1\'c6
+\f0 )\
+        const seatConfig = [ \
+            \{ seats: 6, isFront: true \}, // 
+\f1 \'b2\'c4
+\f0 1
+\f1 \'b1\'c6
+\f0 \
+            \{ seats: 6, isFront: true \}, // 
+\f1 \'b2\'c4
+\f0 2
+\f1 \'b1\'c6
+\f0 \
+            \{ seats: 6, isFront: false \},// 
+\f1 \'b2\'c4
+\f0 3
+\f1 \'b1\'c6
+\f0 \
+            \{ seats: 5, isFront: false \},// 
+\f1 \'b2\'c4
+\f0 4
+\f1 \'b1\'c6
+\f0 \
+            \{ seats: 5, isFront: false \} // 
+\f1 \'b2\'c4
+\f0 5
+\f1 \'b1\'c6
+\f0  (
+\f1 \'b3\'cc\'ab\'e1\'a4\'40\'b1\'c6\'a1\'41\'bd\'d5\'be\'e3\'ac\'b0
+\f0 5
+\f1 \'ad\'d3\'ae\'79\'a6\'ec
+\f0 )\
+        ];\
+        const MAX_COLS = 6; \
+        // 
+\f1 \'a6\'d1\'ae\'76\'b5\'f8\'a8\'a4\'a1\'41\'b3\'cc\'be\'61\'aa\'f1\'b6\'c2\'aa\'4f
+\f0  (r:0) 
+\f1 \'aa\'ba\'b3\'cc\'a5\'aa\'c3\'e4
+\f0  (c:0) 
+\f1 \'a6\'ec\'b8\'6d\'a4\'a3\'b1\'c6
+\f0 \
+        const unusableSeats = [\{ r: 0, c: 0 \}]; \
+\
+        const monthSelect = document.getElementById('month-select');\
+        const seatingChartTitle = document.getElementById('seating-chart-title');\
+        const seatingChartContainer = document.getElementById('seating-chart-container');\
+        const generateBtn = document.getElementById('generate-chart-btn');\
+        const notificationArea = document.getElementById('chart-notification');\
+        const manualAdjustBtn = document.getElementById('manual-adjust-btn');\
+        const printBtn = document.getElementById('print-chart-btn');\
+\
+        const prioritySelects = [\
+            document.getElementById('priority-front-1'),\
+            document.getElementById('priority-front-2'),\
+            document.getElementById('priority-front-3')\
+        ];\
+        const avoidSelects = [\
+            \{ a: document.getElementById('avoid-1a'), b: document.getElementById('avoid-1b') \},\
+            \{ a: document.getElementById('avoid-2a'), b: document.getElementById('avoid-2b') \}\
+        ];\
+\
+        let currentChartData = []; \
+        let isManualAdjustMode = false;\
+        let firstSelectedSeatForSwap = null; \
+\
+        function isUnusable(r, c) \{\
+            return unusableSeats.some(seat => seat.r === r && seat.c === c);\
+        \}\
+\
+        function populateStudentDropdowns() \{\
+            const studentNamesForDropdown = students.map(s => s.name);\
+            const allDropdowns = [\
+                ...prioritySelects,\
+                ...avoidSelects.map(p => p.a),\
+                ...avoidSelects.map(p => p.b)\
+            ];\
+\
+            allDropdowns.forEach(select => \{\
+                if (!select) return;\
+                const currentValue = select.value; \
+                while (select.options.length > 1) \{ select.remove(1); \}\
+                studentNamesForDropdown.forEach(name => \{\
+                    const option = document.createElement('option');\
+                    option.value = name;\
+                    option.textContent = name;\
+                    select.appendChild(option);\
+                \});\
+                select.value = currentValue; \
+            \});\
+        \}\
+\
+        function updateChartTitle() \{\
+            const selectedMonth = monthSelect.value;\
+            seatingChartTitle.textContent = `$\{selectedMonth\}
+\f1 \'a4\'eb\'a5\'f7
+\f0  Gloria
+\f1 \'a6\'d1\'ae\'76\'be\'c9\'ae\'76\'af\'5a\'ae\'79\'a6\'ec\'aa\'ed
+\f0 `;\
+        \}\
+        \
+        function handleSeatClick(r, c) \{\
+            if (!isManualAdjustMode || isUnusable(r,c)) return; \
+\
+            const clickedSeatDiv = seatingChartContainer.querySelector(`[data-row='$\{r\}'][data-col='$\{c\}']`);\
+\
+            if (!firstSelectedSeatForSwap) \{\
+                firstSelectedSeatForSwap = \{ r, c, div: clickedSeatDiv \};\
+                clickedSeatDiv.classList.add('selected-for-swap');\
+            \} else \{\
+                if (firstSelectedSeatForSwap.r === r && firstSelectedSeatForSwap.c === c) \{\
+                    firstSelectedSeatForSwap.div.classList.remove('selected-for-swap');\
+                    firstSelectedSeatForSwap = null;\
+                    return;\
+                \}\
+\
+                const student1 = currentChartData[firstSelectedSeatForSwap.r][firstSelectedSeatForSwap.c];\
+                const student2 = currentChartData[r][c];\
+\
+                currentChartData[firstSelectedSeatForSwap.r][firstSelectedSeatForSwap.c] = student2;\
+                currentChartData[r][c] = student1;\
+\
+                firstSelectedSeatForSwap.div.classList.remove('selected-for-swap');\
+                firstSelectedSeatForSwap = null;\
+                displayChart(currentChartData); \
+            \}\
+        \}\
+\
+        function displayChart(chartToDisplay) \{\
+            currentChartData = chartToDisplay; \
+            seatingChartContainer.innerHTML = ''; \
+            seatingChartContainer.style.gridTemplateColumns = `repeat($\{MAX_COLS\}, minmax(0, 1fr))`;\
+\
+            chartToDisplay.forEach((rowStudents, rowIndex) => \{\
+                for (let colIndex = 0; colIndex < MAX_COLS; colIndex++) \{\
+                    const studentObject = rowStudents[colIndex]; \
+                    const seatDiv = document.createElement('div');\
+                    seatDiv.setAttribute('data-row', rowIndex);\
+                    seatDiv.setAttribute('data-col', colIndex);\
+\
+                    if (colIndex < seatConfig[rowIndex].seats) \{ \
+                        if (isUnusable(rowIndex, colIndex)) \{\
+                            seatDiv.classList.add('unusable-seat');\
+                            seatDiv.textContent = '
+\f1 \'a4\'a3\'b1\'c6\'a6\'ec
+\f0 ';\
+                        \} else \{\
+                            seatDiv.classList.add('seat');\
+                            if (studentObject) \{\
+                                const idSpan = document.createElement('span');\
+                                idSpan.classList.add('student-id');\
+                                idSpan.textContent = studentObject.id;\
+                                \
+                                const nameSpan = document.createElement('span');\
+                                nameSpan.classList.add('student-name');\
+                                nameSpan.textContent = studentObject.name;\
+                                \
+                                seatDiv.appendChild(idSpan);\
+                                seatDiv.appendChild(nameSpan);\
+                            \} else \{\
+                                seatDiv.classList.add('bg-gray-100'); \
+                            \}\
+\
+                            if (isManualAdjustMode) \{\
+                                seatDiv.classList.add('manual-adjust-active');\
+                                seatDiv.addEventListener('click', () => handleSeatClick(rowIndex, colIndex));\
+                            \}\
+                            if (firstSelectedSeatForSwap && firstSelectedSeatForSwap.r === rowIndex && firstSelectedSeatForSwap.c === colIndex) \{\
+                                seatDiv.classList.add('selected-for-swap');\
+                            \}\
+                        \}\
+                    \} else \{ \
+                        seatDiv.classList.add('empty-seat-placeholder');\
+                    \}\
+                    seatingChartContainer.appendChild(seatDiv);\
+                \}\
+            \});\
+        \}\
+        \
+        function generateInitialEmptyLayout() \{\
+            const emptyChart = [];\
+            seatConfig.forEach(rowConf => \{\
+                const row = Array(MAX_COLS).fill(null);\
+                emptyChart.push(row);\
+            \});\
+            displayChart(emptyChart);\
+        \}\
+\
+        function getSelectedConstraints() \{\
+            const priorityFrontNames = prioritySelects.map(s => s.value).filter(v => v !== "");\
+            const avoidPairs = [];\
+            avoidSelects.forEach(pair => \{\
+                if (pair.a.value && pair.b.value && pair.a.value !== pair.b.value) \{\
+                    avoidPairs.push(\{ student1Name: pair.a.value, student2Name: pair.b.value \});\
+                \}\
+            \});\
+            return \{ priorityFrontNames, avoidPairs \};\
+        \}\
+\
+        function isPlacementValid(studentObj, r, c, chartLayout, avoidPairs) \{\
+            if (isUnusable(r,c)) return false;\
+\
+            const neighbors = [\
+                \{ dr: -1, dc: 0 \}, \{ dr: 1, dc: 0 \}, \
+                \{ dr: 0, dc: -1 \}, \{ dr: 0, dc: 1 \}  \
+            ];\
+\
+            for (const neighbor of neighbors) \{\
+                const nr = r + neighbor.dr;\
+                const nc = c + neighbor.dc;\
+\
+                if (nr >= 0 && nr < chartLayout.length && nc >= 0 && nc < MAX_COLS) \{\
+                    if (nc < seatConfig[nr].seats && !isUnusable(nr, nc)) \{\
+                        const neighborStudentObj = chartLayout[nr][nc];\
+                        if (neighborStudentObj) \{ \
+                            for (const pair of avoidPairs) \{\
+                                if ((pair.student1Name === studentObj.name && pair.student2Name === neighborStudentObj.name) ||\
+                                    (pair.student2Name === studentObj.name && pair.student1Name === neighborStudentObj.name)) \{\
+                                    return false; \
+                                \}\
+                            \}\
+                        \}\
+                    \}\
+                \}\
+            \}\
+            return true; \
+        \}\
+        \
+        function shuffleArray(array) \{\
+            for (let i = array.length - 1; i > 0; i--) \{\
+                const j = Math.floor(Math.random() * (i + 1));\
+                [array[i], array[j]] = [array[j], array[i]];\
+            \}\
+        \}\
+\
+        function generateSeatingChart() \{\
+            notificationArea.textContent = ''; \
+            const \{ priorityFrontNames, avoidPairs \} = getSelectedConstraints();\
+            \
+            let studentsToPlace = [...students]; \
+            \
+            const newChart = [];\
+            seatConfig.forEach(() => \{\
+                newChart.push(Array(MAX_COLS).fill(null)); \
+            \});\
+\
+            let placedCount = 0;\
+\
+            priorityFrontNames.forEach(studentName => \{\
+                const studentObj = students.find(s => s.name === studentName);\
+                if (!studentObj) return;\
+\
+                let placed = false;\
+                for (let r = 0; r < newChart.length && !placed; r++) \{\
+                    if (seatConfig[r].isFront) \{\
+                        const seatOrder = Array.from(\{length: seatConfig[r].seats\}, (_, i) => i);\
+                        shuffleArray(seatOrder); \
+\
+                        for (const c of seatOrder) \{\
+                            if (isUnusable(r,c)) continue; \
+\
+                            if (newChart[r][c] === null && isPlacementValid(studentObj, r, c, newChart, avoidPairs)) \{\
+                                newChart[r][c] = studentObj;\
+                                studentsToPlace = studentsToPlace.filter(s => s.id !== studentObj.id);\
+                                placed = true;\
+                                placedCount++;\
+                                break;\
+                            \}\
+                        \}\
+                    \}\
+                \}\
+                if (!placed) \{\
+                    console.warn(`
+\f1 \'b5\'4c\'aa\'6b\'b1\'4e\'c0\'75\'a5\'fd\'be\'c7\'a5\'cd
+\f0  $\{studentName\} 
+\f1 \'a6\'77\'b1\'c6\'a8\'ec\'ab\'65\'b1\'c6\'a8\'c3\'ba\'a1\'a8\'ac\'ad\'ad\'a8\'ee\'a1\'43
+\f0 `);\
+                \}\
+            \});\
+\
+            shuffleArray(studentsToPlace); \
+\
+            for (const studentObj of studentsToPlace) \{\
+                let studentSuccessfullyPlaced = false;\
+                const availableSeats = [];\
+                for (let r = 0; r < newChart.length; r++) \{\
+                    for (let c = 0; c < seatConfig[r].seats; c++) \{\
+                        if (isUnusable(r,c)) continue;\
+                        if (newChart[r][c] === null) \{\
+                            availableSeats.push(\{r, c\});\
+                        \}\
+                    \}\
+                \}\
+                shuffleArray(availableSeats); \
+\
+                for (const seat of availableSeats) \{\
+                     if (isPlacementValid(studentObj, seat.r, seat.c, newChart, avoidPairs)) \{\
+                        newChart[seat.r][seat.c] = studentObj;\
+                        studentSuccessfullyPlaced = true;\
+                        placedCount++;\
+                        break;\
+                    \}\
+                \}\
+                 if (!studentSuccessfullyPlaced) \{\
+                    console.warn(`
+\f1 \'b5\'4c\'aa\'6b\'ac\'b0\'be\'c7\'a5\'cd
+\f0  $\{studentObj.name\} 
+\f1 \'a7\'e4\'a8\'ec\'ba\'a1\'a8\'ac\'a9\'d2\'a6\'b3\'ad\'ad\'a8\'ee\'aa\'ba\'ae\'79\'a6\'ec\'a1\'43
+\f0 `);\
+                 \}\
+            \}\
+            \
+            const stillUnplaced = students.filter(s => !newChart.flat().some(p => p && p.id === s.id));\
+            if (stillUnplaced.length > 0) \{\
+                notificationArea.textContent += `
+\f1 \'aa\'60\'b7\'4e\'a1\'47\'a5\'d1\'a9\'f3\'ad\'ad\'a8\'ee\'a1\'41\'b3\'a1\'a4\'c0\'be\'c7\'a5\'cd
+\f0  ($\{stillUnplaced.map(s=>s.name).join(', ')\}) 
+\f1 \'a5\'bc\'af\'e0\'a7\'b9\'ac\'fc\'a6\'77\'b1\'c6\'a1\'41\'b1\'4e\'b9\'c1\'b8\'d5\'a9\'f1\'a4\'4a\'b3\'d1\'be\'6c\'aa\'c5\'a6\'ec\'a1\'43
+\f0 \\n`;\
+                stillUnplaced.forEach(studentObj => \{\
+                    let forcePlaced = false;\
+                    for (let r = 0; r < newChart.length && !forcePlaced; r++) \{\
+                        for (let c = 0; c < seatConfig[r].seats && !forcePlaced; c++) \{\
+                            if (isUnusable(r,c)) continue; \
+                            if (newChart[r][c] === null) \{\
+                                newChart[r][c] = studentObj;\
+                                forcePlaced = true;\
+                                placedCount++;\
+                            \}\
+                        \}\
+                    \}\
+                \});\
+            \}\
+\
+            if (placedCount < students.length) \{\
+                 notificationArea.textContent += `
+\f1 \'c4\'b5\'a7\'69\'a1\'47\'a8\'c3\'ab\'44\'a9\'d2\'a6\'b3\'be\'c7\'a5\'cd\'b3\'a3\'a4\'77\'a6\'77\'b1\'c6\'ae\'79\'a6\'ec
+\f0  ($\{placedCount\}/$\{students.length\})
+\f1 \'a1\'43\'bd\'d0\'c0\'cb\'ac\'64\'ad\'ad\'a8\'ee\'b1\'f8\'a5\'f3\'a1\'43
+\f0 \\n`;\
+            \}\
+            displayChart(newChart);\
+        \}\
+        \
+        function toggleManualAdjustMode() \{\
+            isManualAdjustMode = !isManualAdjustMode;\
+            manualAdjustBtn.textContent = isManualAdjustMode ? '
+\f1 \'a7\'b9\'a6\'a8\'bd\'d5\'be\'e3
+\f0 ' : '
+\f1 \'a4\'e2\'b0\'ca\'bd\'d5\'be\'e3\'ae\'79\'a6\'ec
+\f0 ';\
+            manualAdjustBtn.classList.toggle('action-button', isManualAdjustMode); \
+            manualAdjustBtn.classList.toggle('secondary-button', !isManualAdjustMode);\
+            firstSelectedSeatForSwap = null; \
+            displayChart(currentChartData); \
+        \}\
+\
+        monthSelect.addEventListener('change', updateChartTitle);\
+        generateBtn.addEventListener('click', () => \{\
+            if (isManualAdjustMode) \{ \
+                toggleManualAdjustMode();\
+            \}\
+            generateSeatingChart();\
+        \});\
+        manualAdjustBtn.addEventListener('click', toggleManualAdjustMode);\
+        printBtn.addEventListener('click', () => \{\
+            window.print();\
+        \});\
+\
+        populateStudentDropdowns();\
+        updateChartTitle(); \
+        generateInitialEmptyLayout(); \
+\
+    </script>\
+</body>\
+</html>\
+}
